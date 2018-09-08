@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+	<html lang="en">
+		<head>
+  			<meta charset="utf-8">
+  			<meta name="viewport" content="width=device-width, initial-scale=1">
+  			<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  			<link rel="stylesheet" href="{% static 'style.css' %}" />
+			<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+			<link href="https://fonts.googleapis.com/css?family=Prompt:400i" rel="stylesheet">
+
+  			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  			<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  			<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  			<script src="http://d3js.org/d3.v3.min.js"></script>
+
+		</head>
+			<nav class = "navbar navbar-default">
+				<div class = "container-fluid">
+					<ul class="nav navbar-nav">
+						<li><a href="{%url 'index'%}"> Home </a></li>
+						<li class = "dropdown">
+
+							<a class = "dropdown-toggle" data-toggle="dropdown">Table of Contents
+							<span class = "caret"> </span> </a>
+							<ul class = "dropdown-menu">
+								<li> <a href = "{%url 'toc_about'%}"> About/Search </a></li>
+								
+							
+							</ul>
+						</li>
+
+						<li class = "dropdown">
+
+							<a class = "dropdown-toggle" data-toggle="dropdown">Descriptions
+							<span class = "caret"> </span> </a>
+							<ul class = "dropdown-menu">
+								<li> <a href = "{%url 'descript_about' %}"> About/Search </a></li>
+								
+							</ul>
+						</li>
+						<li class = "dropdown">
+							<a class = "dropdown-toggle" data-toggle = "dropdown">Classes
+							<span class = "caret"> </span>
+							</a>
+						<ul class = "dropdown-menu">
+							<li><a href = "{%url 'classes_about'%}">About/Search</a></li>
+							
+						</ul>
+						</li>
+						</li>
+
+						<li class = "dropdown">
+							<a class = "dropdown-toggle" data-toggle = "dropdown">Job
+							<span class = "caret"> </span>
+							</a>
+						<ul class = "dropdown-menu">
+							<li><a href = "{%url 'job_search' %}"> search_suitable_job </a></li>
+						
+						</ul>
+						</li>
+
+						<li class = "dropdown">
+							<a class = "dropdown-toggle" data-toggle = "dropdown">Visuals
+							<span class = "caret"> </span>
+							</a>
+						<ul class = "dropdown-menu">
+							<li><a href = "{%url 'circle_packer' %}"> Circle Packer </a></li>
+						</ul>
+						</li>
+
+
+						<li><a href="{%url 'about'%}">About</a></li>
+					</ul>
+				</div>
+			</nav>
+			{% block content %}
+			{% endblock content %}
+	
+
+</html>

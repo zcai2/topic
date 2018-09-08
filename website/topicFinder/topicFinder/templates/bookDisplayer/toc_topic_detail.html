@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{%load search_extras%}
+{%load topic_extras%}
+{% block content %}
+
+	<div class = "container">
+	<h1> Topic Detail </h1>
+	<div class="well">Topic Words: {{topic_words}}</div>
+		<table class = "table table-stripped">
+			<th> <a  class="clickable" data-toggle="collapse" data-target="#books" font-size = 15 > 
+			  				<font size= "5" color="black" "> Related Books </font size> 
+			  				</a> 
+			  				<span class="badge"> {{topics.count}} 
+							</span>
+
+			 </th>
+	  		
+
+			<th> <a  class="clickable" data-toggle="collapse" data-target="#classes" font-size = 15 > 
+			  				<font size= "5" color="black" "> Related Courses </font size> 
+			  				</a> 
+			  				<span class="badge"> {{class_count}} 
+							</span>
+			 </th>
+
+		</table>
+		
+		<div id = "classes" class="collapse">
+					<ul class = "list-group">
+						{% for class in classes %}
+							<li class="list-group-item"><a href = "{%url 'class_detail' class_id=class.id%}"> {{class.dept_course}} </li>
+						{% empty %}
+							<li class = "list-group-item"> No Classes found! Error! </a> </li>
+						{% endfor %}
+					</ul>
+			</div>
+
+		<div id = "books" class="collapse">
+		  		<ul class = "list-group">
+						{% for topic in topics %}
+							<li class="list-group-item"><a href="{% url 'book_detail' book_id=topic.id%}">{{topic.title}} </a> </li>
+						{% empty %}
+							<li class = "list-group-item"> No Topic found! Error! </li>
+						{% endfor %}
+					</ul>
+			</div>
+
+
+
+
+	</div>
+{% endblock %}

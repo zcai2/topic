@@ -1,0 +1,23 @@
+{%extends "base.html"%}
+% extends "base.html" %}
+{%load topic_extras%}
+{% load search_extras %}
+{% block content %}
+
+	<div class = "container">
+		<p> 
+			This section shows the results of the topic model based on the table of contents. It provides an entire list to view either by book or by topic. On this page, there is also conveniently a search bar for more narrow results.
+		</p>
+
+		<form method="get"  class="navbar-form">
+			Department Tag: <input type="text" id="searchBox" class="input-medium search-query" name="tag_search" placeholder="tag">
+			Course #: <input type="text" id="searchBox" class="input-medium search-query" name="num_search" placeholder="num">
+			
+			
+			<input type="submit" class="btn" value="Search" >
+
+		</form>
+
+		<br/><br/>
+
+{% endblock %}

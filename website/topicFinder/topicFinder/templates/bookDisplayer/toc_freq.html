@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% load topic_extras %}
+<head>
+	<title> Frequency of words </title>
+</head>
+{% block content %}
+	<div class="container">
+  	<h2>Books avaliable</h2>
+
+  	<ul>
+		{% for book in books%}
+			{% with book|load_freq:freqs as freq_list %}
+
+			<div class="panel panel-default">
+  					{% with book|get_title:books_info as booksInfo%}
+  						<div class="panel-body"><a  class="clickable" data-toggle="collapse" data-target="#{{book.id}}" > <i class ="fa fa-caret-right"></i> {{ booksInfo.title }} <span class="badge"> {{freq_list | get_length}} </span> </a>
+						{% endwith %} 
+  						</div>
+
+  				<div id = "{{book.id}}" class="collapse"">
+
+						{% if freq_list != 'Not found' %}
+						<ul>
+							{% for key ,value in freq_list %}
+								<li>  {{key }} -- {{ value }}</li>
+							{% endfor %}
+						</ul>
+
+						{% else %}
+							<p> No Topics were found for this book </p>
+
+						{% endif %}
+						
+
+					{% endwith %}
+
+				</div>
+  			</div>
+		{% endfor %}
+	</ul>
+</div
+
+{% endblock %}

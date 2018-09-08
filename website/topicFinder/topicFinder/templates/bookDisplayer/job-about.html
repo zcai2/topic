@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load topic_extras %}
+
+
+<head> 
+	<title> Topic to Books </title>
+</head>
+
+{% block content %}
+<div class="container">  
+	<ul class = "list-group">
+		{% for class in classes %}
+		{% regroup class|load_jobs:jobs by class.dept_course as job_list %}
+		<li class="list-group-item">
+			<a class = "clickable" data-toggle="collapse" data-target = "#{{class.id}}">
+				<i class ="fa fa-caret-right"></i>
+				{{ class.dept_course}}
+			</a> 
+		</li>
+	
+			<ul class = "list-group",>
+				{%  for job in job_list %}
+				{% for specific_job in job.list%}
+				
+
+				{% if specific_job != 'Not found' %}
+				{% with specific_job|find_job_id:alljobs as jobinfo%}
+				{%  for job_sub in jobinfo %}
+		
+				<li class = "list-group-item"><a href="{% url 'job_detail' job_id=job_sub.id%}">
+
+				{{specifc_job.id}} {{ specific_job.Element2 }}  </li>
+					{% endfor %}
+				{%endwith %}
+				{% else %}
+				<li class = "list-group-item"> No Books were found for this topic </li>
+				{% endif %}
+
+
+
+				{% endfor %}
+				{% endfor %}
+			</ul>
+
+			{% endfor %}
+		</ul>
+	</div>
+
+	{% endblock %}

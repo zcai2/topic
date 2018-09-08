@@ -1,0 +1,173 @@
+import urllib.request, urllib.error, urllib.parse,requests, json,sys , os
+from requests.packages.urllib3.exceptions import InsecurePlatformWarning
+from pprint import pprint
+
+def get_descript(isbn):
+
+    requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+
+    with open(os.path.abspath("database_storing/Description/apiKeyGoogle.txt"), "r") as key_file:
+        key = key_file.read()
+
+    # key = 'AIzaSyA8bsBXSaJeKXTrWOyf5V0oBjJivBVetm4'
+
+    url = 'https://www.googleapis.com/books/v1/volumes?key=' + key +'&q=' + isbn
+    json_response = requests.get(url)
+    json_output = json.loads(json_response.text)
+    try:
+    	if(json_output['totalItems'] == 0):
+        	print(("No books found for this book --> " + isbn))
+        	return "" , url
+    except KeyError as e:
+     	pprint(json_output)
+     	sys.exit(0)
+
+    try:
+
+        error = json_output['error']
+        if(error is not None):
+            print("API limit reach, exiting")
+            eval(input("waiting"))
+            sys.exit(0)
+
+    except KeyError as e:
+        isbn_number = ''
+        entry_number = 0
+
+        # the correct entry defaults to the first entry
+        correct_entry = json_output['items'][entry_number]
+
+        # checks every entry for the correct isbn number
+        for entry in json_output['items']:
+            volumeInfo = entry['volumeInfo']
+
+            # odd case where the first entry didn't have an isbn provided....
+            try:
+                industryInfo = volumeInfo['industryIdentifiers']
+
+            # if there is no isbn information provided, keep checking the other ones
+            except KeyError as no_isbn:
+                continue
+
+            # search every isbn provided, if there was one founded
+            for isbn_type in industryInfo:
+
+                if isbn_type['type'] == 'ISBN_13':
+                    isbn_number = isbn_type['identifier']
+
+                    if isbn_number == isbn:
+                        correct_entry = entry
+                        break
+
+
+
+        # at this point, correct_entry only changes if the correct isbn is found, otherwise it uses the first book found; which still could be wrong
+
+
+        #stores the description the API provided
+        api_descript = ""
+        try:
+            api_descript = correct_entry['volumeInfo']['description']
+
+            # if it has this string contained within in it, then we have to find the first one that does not have this
+            while "never highlight a book again!" in api_descript.lower():
+                entry_number += 1
+                correct_entry = json_output['items'][entry_number]
+                api_descript = correct_entry['volumeInfo']['description']
+
+
+        # The api did not provide a description
+        #
+        # !! It can also crash if , while checking for a book that does not have the notes preface,
+        # !! it ran across one that does not have a description at all
+        #
+        except KeyError as e3:
+            print(("No description found, trying selfLink -- >" + isbn))
+
+        # proceeds to try the second link
+        selfLink_url = correct_entry['selfLink']
+        json_response = requests.get(selfLink_url)
+        json_output = json.loads(json_response.text)
+
+
+        try:
+            volumeInfo = json_output['volumeInfo']
+
+        #if the self link does not have volumeInfo for any reason
+        except KeyError as e4:
+            #As long as the api_descript is not empty, return it
+            # By this make, it probably is not cliffnotes one
+
+            try:
+                error = json_output['error']
+                if(error is not None):
+                    print("API limit reach, exiting")
+                    eval(input("waiting"))
+                    sys.exit(0)
+
+            except KeyError as e:
+
+                if api_descript != "":
+                    print(("Returning original description - " + isbn))
+                    return api_descript , url
+
+                # if the Api key is empty, then it has to check the other link, usually this fails to through if the selfLink failed
+                else:
+                    print("returning an empty string, trying different url...")
+                    url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn
+                    json_response = requests.get(url)
+                    json_output = json.loads(json_response.text)
+
+                    # Standard check to see if the volume description works
+                    try:
+                        apt_descript = json_output['volumeInfo']['descripton']
+
+                    # Now for sure it is not working...
+                    except KeyError as e5:
+                        eval(input(e))
+                        eval(input("still didn't work..." + isbn))
+                        return ""  , url
+
+
+        # IF it get here, then that means the original selfLink worked and that the next step is checking the isbns
+        #
+        # last check; this time checking the isbn actually provided
+        found = False
+        try:
+            # for each isbn provided in the volume info
+            for isbn_type in volumeInfo['industryIdentifiers']:
+                if isbn_type['type'] == 'ISBN_13':
+                    isbn_number = isbn_type['identifier']
+                    found = True
+                    break
+
+            # This means the selfLink provided did not work and did not have the expected isbn number
+            if not found:
+                try:
+                    error = json_output['error']
+                    if(error is not None):
+                        print("API limit reach, exiting")
+                        sys.exit(0)
+
+                except KeyError as e:
+
+                    # see if the original api entry had a description, and use that
+                    if api_descript != "":
+                        print(("Returning original description - " + isbn))
+                        return api_descript , url
+
+                    # otherwise the book was not found at all....
+                    print(("Book not found...." + url))
+                    return "" , url
+
+        except KeyError as e6:
+            found = True
+
+        try:
+            description = volumeInfo['description']
+
+        except KeyError as e7:
+            # raw_input("Description was not found for this book --> " + isbn)
+            return "" , url
+
+        return description , url

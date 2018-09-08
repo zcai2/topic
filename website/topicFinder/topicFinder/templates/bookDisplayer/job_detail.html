@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load topic_extras %}
+
+<head> 
+	<title> Topic to Books </title>
+</head>
+
+
+{% block content %}
+
+
+<div class="container">  
+	<ul class = "list-group">
+		{% for element in job %}
+		<th> 
+
+			<font size= "15" color="black" text-align="center" "> {{ element.title}} </font> 
+			<p>
+			<font size= "3" color="black" text-align="center" "> {{ element.description_raw|linebreaks }} </font> 
+		</p>
+
+		</th>
+
+		{% endfor %}
+		
+	</div>
+
+	{% endblock %}

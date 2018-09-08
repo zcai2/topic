@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+<head> 
+	<title> Welcome </title>
+</head>
+{% block content %}
+
+<div class="container">
+	<h1>Homepage</h1>
+	<h3> Introduction: </h3>
+	<div class="well well-sm">
+		<font size = "+1"><i>Identifying the topics in a specific university course is an important process for evaluating the department program and also can help student understand the whole degree requirement. Every course has a list of concept hidden in course content such as syllabus and book.  Sometimes, students will feel confused about the goal and outcome for a course because they never have a chance to evaluate these course information in a systematic way. As a result, student didn't get enough information to help them to decide the future career direction. To this end, it's very important for us to evaluate these course content for student. However, if we evaluate raw course information without any tools, it would be very hard. Therefore, we applied a technology called topic modeling, which is a machine learning tool that can help us find the hidden concepts in a document.  We do the topic modeling for some databases including the topic distribution of course syllabus, course book content, book description, and job description. For holistic evaluation, our research also involves analysis prerequisite chain in George Mason University department.  By exploring and mining these datasets and performing some experiments on these datasets, our method is able to discover the relationship between course in a specific prerequisite chain and find the suitable job for student</i></font> <br>
+	</div>
+
+	<h3> Course Dataset: </h3>
+	<div class="well well-sm">
+		<font size = "+1"><i>GMU fall semeter courses</i></font> <br>
+	</div>
+	<h3> Jobdescirption Dataset: </h3>
+	<div class="well well-sm">
+		<font size = "+1"><i>https://www.kaggle.com/madhab/jobposts</i></font> <br>
+	</div>
+
+
+</div>
+
+{% endblock %}
+
+

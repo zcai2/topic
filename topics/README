@@ -1,0 +1,18 @@
+This folder contains the things used to find the topics
+
+Java based
+
+Mongo folder contains the .jar for the Mongo driver
+
+
+
+REQUIREMENTS:
+	User needs to install Mallet and place it in a folder called Mallet so the directory looks as such
+
+	topics
+	|
+	|------> Frequency
+		 Mallet
+		 |
+		 |-------> (Mallet program unzipped here)
+		 Topic Modeling

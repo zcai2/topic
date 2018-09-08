@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load search_extras %}
+<head> 
+	<title> Book to Topics </title>
+</head>
+
+{% block content %}
+
+	<div class="container">
+		<ul>
+  		{% with  course|get_courses:courses as found_courses %}
+  			{% for class in found_courses %}
+  				<div class="panel panel-default">
+  					<div class="panel-body">
+
+					<a  class="clickable" data-toggle="collapse" data-target="#{{class.id}}" > 
+						<i class ="fa fa-caret-right"></i> {{ class.dept_course }} </a>
+					</div>
+
+					<div id = "{{class.id}}" class="collapse"">
+		  				{% with class.associated_books|get_books as books%}
+		  					{% for book in books %}
+		  						<p> {{book | title}} -- {{book | isbn}} </p>
+		  						<div class = "container">	
+
+											<table>
+												<tr> 
+													<th> 
+														Topics by Description
+													</th>	
+
+													<th>
+														Topics by Table of Contents
+													</th>
+												</tr>
+												<tr>
+												<td>
+													<ul>
+														{% with book|get_descript_topics:descript_books as topics %}
+																	{% for topic in topics %}
+																		<li>	{{topic.topic_words}} ({{topic.topic_distribution}})</li>
+																	{% endfor %}
+																{% endwith %}
+													</ul>
+												</td>
+												
+
+												<td>
+													<ul>
+														{% with book|get_toc_topics:toc_books as topics %}
+
+																	{% for topic in topics %}
+																		<li> {{topic.topic_words}} ({{topic.topic_distribution}})</li>
+																	{% endfor %}
+																{% endwith %}
+													</ul>
+												</td>
+												</tr>
+
+
+											</table>
+										</div>
+
+
+		  					{% endfor %}
+
+		  				{% endwith %}
+	  					</div>
+	  				</div>
+	  			{% endfor %}
+	  				
+	  		{% endwith %}
+	  	</ul>
+	  </div>
+
+{% endblock %}

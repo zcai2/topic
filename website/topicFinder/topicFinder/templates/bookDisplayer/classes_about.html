@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{%load topic_extras%}
+{% load search_extras %}
+{% block content %}
+
+<div class = "container">
+	<p> 
+		This section shows the results of the topic model based on the table of contents. It provides an entire list to view either by book or by topic. On this page, there is also conveniently a search bar for more narrow results.
+	</p>
+
+	<form method="get"  class="navbar-form">
+		Department Tag: <input type="text" id="searchBox" class="input-medium search-query" name="tag_search" placeholder="tag">
+		Course #: <input type="text" id="searchBox" class="input-medium search-query" name="num_search" placeholder="num">
+		<input type="submit" class="btn" value="Search" >
+	</form>
+
+	<br/><br/>
+	{%if results%}
+	<p> Search returned : {{results.count}} results </p>
+	{%endif %}
+	<ul class = "list-group">
+		{% for entry in results %}
+
+		<li class = "list-group-item"> <a  class="clickable" data-toggle="collapse" data-target="#{{entry.id}}" ><i class ="fa fa-caret-right"></i>{{ entry.dept_course}}</a> </li>
+
+		<div id = "{{entry.id}}" class="collapse">
+			<ul class = "list-group">
+				{% with entry|get_associated_books as books %}
+				{% for book in books %}
+				{% with entry.id|add_counter as counter %}
+				<div class="panel panel-default">
+					<li class="list-group-item">
+						<a class = "clickable" data-toggle="collapse" data-target = "#{{counter}}">
+							<i class ="fa fa-caret-right"></i>
+
+							{{ book | get_book_title }} 
+						</a> </li> 
+						<div id = "{{counter}}" class = "collapse">	
+
+							<table class = "table table-stripped">
+								<tr> 
+									<th> 
+										Topics by Description 				
+										<span class="badge"> {{book|get_num_books_descript_2:book_topic_info}} </span>
+
+									</th>	
+
+									<th>
+										Topics by Table of Contents
+										<span class="badge"> {{book|get_num_books_toc_2:book_topic_info}} </span>
+									</th>
+								</tr>
+								<tr>
+									<td>
+										<ul class= "list-group">
+											{% with book|get_descript_topics:descript_books as topics %}
+											
+											{% for topic in topics %}
+											{% if topic.topic_distribution > "0.1" %}
+											<li class = "list-group-item"><a href="descript-topic-detail/{{topic.topic_id}}">	{{topic.topic_words}} ({{topic.topic_distribution}})</li>
+
+												{% endif %}
+												{% empty %}
+												<li class = "list-group-item disabled"> Description of book not found </li>
+												{% endfor %}
+
+												{% endwith %}
+
+											</ul>
+										</td>
+
+
+										<td>
+											<ul class ="list-group">
+												{% with book|get_toc_topics:toc_books as topics %}
+														
+												{% for topic in topics %}
+												{% if topic.topic_distribution > "0.1" %}
+												<li class = "list-group-item"><a href="toc-topic-detail/{{topic.topic_id}}"> {{topic.topic_words}} ({{topic.topic_distribution}})</li>
+													{% empty %}
+													{% endif %}
+													<li class = "list-group-item disabled"> Description of book not found </li>
+													{% endfor %}
+													{% endwith %}
+												</ul>
+											</td>
+										</tr>
+
+
+									</table>
+									{% endwith %}
+									<br>
+									<br>
+
+								</div>
+							</div>
+							{% endfor %}
+							{% endwith %}
+						</ul>
+
+					</div>
+
+					{% empty %}
+					<p> Search for a class in the search bar above! </p>
+					{% endfor %}
+				</ul>
+			</div>
+			{% endblock %}

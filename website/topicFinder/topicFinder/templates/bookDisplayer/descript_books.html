@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load topic_extras %}
+<head> 
+	<title> Book to Topics </title>
+</head>
+
+{% block content %}
+
+	<div class="container">
+  	<h2>Books avaliable</h2>
+
+  	<ul class = "list-group">
+		{% for book in books %}
+		{% regroup book|load_topics:topics by book.id as topic_list %}
+			{% with book|get_title:books_info as booksInfo%}
+						
+  				<li class = "list-group-item">
+  				<a  class="clickable" data-toggle="collapse" data-target="#{{book.id}}" > 
+  				<i class ="fa fa-caret-right"></i> {{ booksInfo.title }}
+  				</a> 
+  				<span class="badge">{{book.descript_topic_count}} 
+  				</span> 
+  				
+  				</li>
+  				
+			{% endwith %}
+
+	
+				<div id = "{{book.id}}" class="collapse"">
+				<ul class = "list-group">
+				{%  for topic in topic_list %}
+						{% for specific_topic in topic.list%}
+							
+								{% if specific_topic != 'Not found' %}
+									<li class = "list-group-item">
+									{% if specific_topic.id%}
+										<a href="{% url 'descript_topic_detail' topic_id=specific_topic.topic_id %}"> 
+									{%endif%}
+									{{ specific_topic.topic_words }}  : ({{specific_topic.topic_distribution}}) </li>
+								{% else %}
+									<li class = "list-group-item"> No Topics were found for this book </li>
+								{% endif %}
+						
+
+						{% endfor %}
+				{% endfor %}
+				</ul>
+    			</div>
+
+		{% endfor %}
+	</ul>
+</div>
+
+{% endblock %}

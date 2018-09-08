@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load topic_extras %}
+<head> 
+	<title> Topic to Books </title>
+</head>
+{% block content %}
+<div class="container">  
+	<h2>Topics avaliable</h2>
+	
+  			<ul class = "list-group">
+				{% for topic in topics %}
+					{% regroup topic|load_books:books by topic.book_count as book_list %}
+
+						<li class = "list-group-item">
+		  				<a  class="clickable" data-toggle="collapse" data-target="#{{topic.id}}" > 
+		  				<i class ="fa fa-caret-right"></i> {{ topic.topic_words}}
+		  				</a> 
+		  			
+						
+						<div id = "{{topic.id}}" >
+						<ul class = "list-group">
+							{%  for book in book_list %}
+									{% for specific_book in book.list%}
+										here: {{specifc_book.id}} {{ specific_book.title }} : ({{specific_book.topic_distribution}}) </li>
+									{% endfor %}
+							{% endfor %}
+						</ul>
+    		
+
+
+				{% endfor %}
+		</ul>
+	</div>
+
+{% endblock %}

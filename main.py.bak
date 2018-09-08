@@ -1,0 +1,124 @@
+import sqlite3 , os , time , datetime , signal , sys
+from subprocess import call
+from database_storing import storing_main
+from lib import fill_tables
+from lib import reset as purge
+from lib import signals
+from lib import save_model
+
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+CONTENT_PATH = ""
+DESCRIPTION_PATH = ""
+
+create_framework = True
+
+print("Hello! Welcome to Topic finder for textbooks!")
+
+if(os.path.exists("./topics/Datastore/") or os.path.exists("./database")):
+    print("!!!! WARNING PREVIOUS DATA FOUND !!!!")
+    print("A previous datastore was found already created")
+    print("Running the application will result in the previous data being used")
+    print("If you have new or different data you would like to use, please reset")
+    print("\n")
+    reset = raw_input("Would you like to reset now? (yes or no):  ")
+    
+    while reset != "yes" and reset != "no":
+        reset = raw_input("Sorry, please type yes or no exactly:  ")
+
+    if reset == "yes":
+        save_data = raw_input("You have selected to delete the previous data! Would you like to save the results first? (yes or no): ")
+        
+        while save_data != "yes" and save_data != "no":
+            save_data = raw_input("Sorry, please type yes or no exactly:  ")
+        
+        if save_data == "yes":
+            save_model.main()
+        
+        print("Proceeding to delete previous database and datastore")
+        purge.main()
+if reset == "no":
+    print("Proceeding with previous data")
+    print("Note: For the model to work, some tables in the database need to be cleared")
+    create_framework = False
+
+time.sleep(3)
+
+conn = sqlite3.connect(BASE_PATH + '/database')
+cursor = conn.cursor()
+if create_framework:
+    print("First we will be creating the SQlite3 database")
+    
+    #if False:
+    cursor.execute('''create table if not exists model_info (id integer , timestamp , alpha , beta , iterations , num_topics);''')
+    cursor.execute('''create table if not exists book_topic_info(id integer ,title , isbn , descript_topic_count , toc_topic_count);''')
+    cursor.execute('''create table if not exists descript_book_topics(id integer,title,isbn, topic_id, topic_distribution ,topic_words);''')
+    cursor.execute('''create table if not exists toc_book_topics(id integer , title , isbn , topic_id , topic_distribution , topic_words);''')
+    cursor.execute('''create table if not exists toc_topics(id integer , topic_words, book_count integer);''')
+    cursor.execute('''create table if not exists descript_topics(id integer , topic_words , book_count integer);''')
+    cursor.execute('''create table if not exists book_info (id integer, isbn, title, author, dept_course , descript_raw,toc_raw , descript_url , toc_url);''')
+    cursor.execute('''create table if not exists class_info(id integer,dept_course, associated_books);''')
+    cursor.execute('''create table if not exists combination(id integer , section , name , book_isbn , book_title, description , summary);''')
+    cursor.execute('''create table if not exists toc_freq(id integer , title , isbn , frequency of words);''')
+    conn.commit()
+    print("Tables created successfully")
+    print("Proceeding to populate the book_info table")
+    storing_main.main()
+    print("Database populated")
+
+# meaning the user wants to work with previous data
+# However certain tables need to be deleted
+else:
+    cursor.execute('''drop table if exists book_topic_info;''')
+    cursor.execute('''drop table if exists descript_book_topics;''')
+    cursor.execute('''drop table if exists toc_book_topics;''')
+    cursor.execute('''drop table if exists toc_topics;''')
+    cursor.execute('''drop table if exists descript_topics;''')
+    cursor.execute('''drop table if exists model_info;''')
+    cursor.execute('''create table if not exists model_info (id integer , timestamp , alpha , beta , iterations , num_topics);''')
+    cursor.execute('''create table if not exists book_topic_info(id integer ,title , isbn , descript_topic_count , toc_topic_count);''')
+    cursor.execute('''create table if not exists descript_book_topics(id integer,title,isbn, topic_id, topic_distribution ,topic_words);''')
+    cursor.execute('''create table if not exists toc_book_topics(id integer , title , isbn , topic_id , topic_distribution , topic_words);''')
+    cursor.execute('''create table if not exists toc_topics(id integer , topic_words, book_count integer);''')
+    cursor.execute('''create table if not exists descript_topics(id integer , topic_words , book_count integer);''')
+
+## next couple of steps involve setting the topic model
+print("")
+print("---Topic model configuration---")
+print("Please select the values for the variables")
+alpha = raw_input("alpha (double): ")
+beta = raw_input("beta (double): ")
+iterations = raw_input("iterations (int): ")
+topics_num = raw_input("number of topics (int) :")
+print("-----------------------------")
+
+ts = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+
+cursor.execute('''insert into model_info(id , timestamp , alpha , beta , iterations , num_topics) values (?,?,?,?,?,?);''' , (1 , ts , alpha , beta , iterations , topics_num))
+conn.commit()
+conn.close()
+
+## next couple of steps invovle running the models
+print("Topic models parameters set, running the model")
+os.chdir("topics/")
+class_path = ".:./Mallet/lib/*:./Mallet/temp/:./sqlite-jdbc-3.8.11.2.jar:"
+call( ['javac' , '-cp' , class_path,'''Modeling.java'''] )
+print("Program compiled successfully, proceeding to run the model with the given parameters")
+call( ['java' , '-cp' , class_path , 'Modeling' , alpha , beta , topics_num , iterations] )
+
+os.chdir("..")
+
+## setting the other database things now
+print("Models successfully trained and saved")
+print("Continuing to fill the other tables")
+
+fill_tables.main()
+
+print("\n")
+print("Running Django App")
+os.chdir("./website/topicFinder")
+
+print("Opening the django server. Press CTRL + C to end the Django program")
+signal.signal(signal.SIGINT , signals.signal_handler)
+call( ['python' , 'manage.py' , 'runserver'] )
+
+

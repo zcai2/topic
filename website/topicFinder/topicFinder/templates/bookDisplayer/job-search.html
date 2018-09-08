@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{%load topic_extras%}
+{% load search_extras %}
+{% block content %}
+
+<div class = "container">
+	<p> 
+		Input your course, and it will show suitable job for you.
+	</p>
+
+	<form method="get"  class="navbar-form">
+		Department Tag: <input type="text" id="searchBox" class="input-medium search-query" name="tag_search" placeholder="tag">
+		Course #: <input type="text" id="searchBox" class="input-medium search-query" name="num_search" placeholder="num">
+
+
+		<input type="submit" class="btn" value="Search" >
+
+	</form>
+
+
+	{%if results%}
+	<p> Search returned : {{results.count}} results </p>
+	{%endif %}
+	<ul class = "list-group">
+		{% for entry in results %}
+
+		<li class = "list-group-item"> <a  class="clickable" data-toggle="collapse" data-target="#{{entry.id}}" ><i class ="fa fa-caret-right"></i>{{ entry.dept_course | capfirst }}</a> </li>
+
+		<div id = "{{entry.id}}" class="collapse">
+			<ul class = "list-group">
+
+				
+
+				<table class = "table table-stripped">
+					<tr> 
+						<th> 
+							   Job by Table of Contents 				
+						
+
+						</th>	
+
+						<th>
+							    Job by Description
+						
+						</th>
+					</tr>
+
+					<td>
+						<ul class= "list-group">
+							{% with my_var=1 %}
+							{% with entry|load_jobs_con:jobs_con  as job_list %}	
+							{%  for job in job_list %}
+							{{ my_var | increment  }}
+							{% if job != 'Not found'  %}
+							{% if my_var < 10  %}
+							{% with job|find_job_id:alljobs as jobinfo%}
+							{%  for job_sub in jobinfo %}
+							{% if job_sub != 'Not found' %}
+							<li class = "list-group-item"><a href="{% url 'job_detail' job_id=job_sub.id%}">
+							{{ job.Element2  }} {{ job.Similarity  }} </li>
+							{% endif %}
+							{% endfor %}
+							{%endwith %}
+							{% endif %}
+							{% else %}
+							<li class = "list-group-item"> No Books were found for this topic </li>
+							{% endif %}
+							{% endfor %}
+
+							{% endwith %}
+							{% endwith %}
+
+						</td>
+
+
+
+						<td>
+							<ul class ="list-group">
+								{% with entry|load_jobs_des:jobs_des  as job_list %}	
+								{%  for job in job_list %}
+								{% if job != 'Not found' %}
+								{% with job|find_job_id:alljobs as jobinfo%}
+								{%  for job_sub in jobinfo %}
+								{% if job_sub != 'Not found' %}
+								<li class = "list-group-item"><a href="{% url 'job_detail' job_id=job_sub.id%}">
+								{{ job.Element2  }} {{ job.Similarity  }} </li>
+								{% endif %}
+								{% endfor %}
+								{%endwith %}
+								{% else %}
+								<li class = "list-group-item"> No Books were found for this topic </li>
+								{% endif %}
+								{% endfor %}
+
+								{% endwith %}
+
+							</td>
+
+
+						</table>
+
+
+
+						
+
+					</ul>
+
+				</div>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endblock %}
