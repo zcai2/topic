@@ -13,3 +13,8 @@ In order to better plan one's college course and eventual career options, it is 
 ps:
 You might have to rename database.sql to database
 
+The dependencies are: Sqlite3 (newest version) and Django (version 1.9).
+Previous project Link:
+https://github.com/atakieddin/Topics-Finder
+
+
