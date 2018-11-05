@@ -10,7 +10,7 @@ Django (version 1.9).
 1: download porject
 2: run python main.py
 ps:
-You might have to rename database.sql to database
+You might rename database.sql to database
 
 ## Project Feautre Description
 Main Page of this Project
