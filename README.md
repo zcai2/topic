@@ -19,7 +19,7 @@ Main Page of this Project
 
 ## License and Authors
 
-This work was done with Prfessor Huzefa Rangwala and undergraduate student Ameer Takaddein at George Mason University, funded by National Science Foundation.
+This work was done with Professor Huzefa Rangwala and undergraduate student Ameer Takaddein at George Mason University, funded by National Science Foundation.
 Previous project Link:
 https://github.com/atakieddin/Topics-Finder
 
