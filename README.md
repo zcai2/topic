@@ -15,7 +15,7 @@ You might rename database.sql to database
 ## Project Feautre Description
 Main Page of this Project
 
-[Picture1.pdf](https://github.com/zcai2/topic/files/2549507/Picture1.pdf)
+![image](https://user-images.githubusercontent.com/25554549/48011057-d5cb2780-e159-11e8-9012-2bc5d4365b4d.png)
 
 
 
