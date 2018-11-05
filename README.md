@@ -23,3 +23,5 @@ This work was done with Prfessor Huzefa Rangwala at George Mason University, fun
 Previous project Link:
 https://github.com/atakieddin/Topics-Finder
 
+If you have any questions, please contact me (zcai2@gmu.edu)
+
