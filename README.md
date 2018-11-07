@@ -26,12 +26,12 @@ Job: Input a GMU course ID, CS450 in gmu is Database Management and the matching
 ![image](https://user-images.githubusercontent.com/25554549/48011311-60ac2200-e15a-11e8-9f26-2e3c0e16e09e.png)
 Student also can view the job description.
 ![image](https://user-images.githubusercontent.com/25554549/48011271-4a9e6180-e15a-11e8-844f-2989e5a226be.png)
-
+This figure shows the circle packet view of GMU courses.To allow users to visually see how much a topic takes of a particular course's required textbook, we provided an interactive circle packing graphic. Its allows users to click on the circles and zoom in to a particular course and see how much each of it's required textbooks take up of the related topics. For example, 
 ![image](https://user-images.githubusercontent.com/25554549/48136664-2f0e9480-e2db-11e8-92a1-5948e6890cd8.png)
-
+This figure shows a zoomed in course circle. In the picture, the outer-most circle represents the course, and the two medium sized circles represent the two required books for the course. The colored circles represent the individual topics assigned to that course. For this course, it's two books are pretty relevant to the over all material and you can see how the topics are covered in pretty much equal size in both of the books.
 ![image](https://user-images.githubusercontent.com/25554549/48136720-55cccb00-e2db-11e8-8241-1170c2b40ac4.png)
 
-
+By providing this interface we allow students and professors the opportunity to ensure that the required books match ups with the topics the course is aiming to cover. Or, if multiple books are required, it can ensure that the books cover enough distinct topics to justify their requirement.
 
 
 
