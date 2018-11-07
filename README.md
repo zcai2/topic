@@ -14,18 +14,17 @@ You might rename database.sql to database
 
 ## Project Feautre Description
 Main Page of this Project
-
 ![image](https://user-images.githubusercontent.com/25554549/48011057-d5cb2780-e159-11e8-9012-2bc5d4365b4d.png)
 
-
+Table of Contents (TOC): Input a book name or ISBN, you can view the topic ditribution of that book's TOC.
 ![image](https://user-images.githubusercontent.com/25554549/48011181-19be2c80-e15a-11e8-9ab2-4e194cc5c088.png)
-
+Description: Input a book name or ISBN, you can view the topic ditribution of that book's description.
 ![image](https://user-images.githubusercontent.com/25554549/48011218-2b9fcf80-e15a-11e8-8e58-aa69fe3cdfce.png)
-
+Class: Input a GMU course ID, CS310 in gmu is Data Strucuture
 ![image](https://user-images.githubusercontent.com/25554549/48011239-36f2fb00-e15a-11e8-9e78-c15a41e1d9ed.png)
-
+Job: Input a GMU course ID, CS450 in gmu is Database Management and the matching job distribution for this couses shown as below:
 ![image](https://user-images.githubusercontent.com/25554549/48011311-60ac2200-e15a-11e8-9f26-2e3c0e16e09e.png)
-
+Student also can view the job description.
 ![image](https://user-images.githubusercontent.com/25554549/48011271-4a9e6180-e15a-11e8-844f-2989e5a226be.png)
 
 
