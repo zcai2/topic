@@ -27,6 +27,10 @@ Job: Input a GMU course ID, CS450 in gmu is Database Management and the matching
 Student also can view the job description.
 ![image](https://user-images.githubusercontent.com/25554549/48011271-4a9e6180-e15a-11e8-844f-2989e5a226be.png)
 
+![image](https://user-images.githubusercontent.com/25554549/48136664-2f0e9480-e2db-11e8-92a1-5948e6890cd8.png)
+
+![image](https://user-images.githubusercontent.com/25554549/48136720-55cccb00-e2db-11e8-8241-1170c2b40ac4.png)
+
 
 
 
